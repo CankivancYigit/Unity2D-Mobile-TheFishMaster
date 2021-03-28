@@ -74,7 +74,7 @@ public class Hook : MonoBehaviour
     {
         canMove = false;
         cameraTween.Kill(false);
-        cameraTween = mainCamera.transform.DOMoveY(1.11f, 2, false).OnUpdate(delegate
+        cameraTween = mainCamera.transform.DOMoveY(0 , 2, false).OnUpdate(delegate
         {
             if (mainCamera.transform.position.y >= -7)
             {
