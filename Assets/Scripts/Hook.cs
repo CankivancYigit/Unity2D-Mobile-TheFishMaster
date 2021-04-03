@@ -14,6 +14,8 @@ public class Hook : MonoBehaviour
     int strenght;
     int fishCount;
 
+    List<Fish> caughtFishes;
+
     bool canMove;
 
     Tweener cameraTween;
@@ -22,6 +24,7 @@ public class Hook : MonoBehaviour
     {
         myCollider = GetComponent<Collider2D>();
         mainCamera = Camera.main;
+        caughtFishes = new List<Fish>();
     }
 
     void Start()
@@ -86,5 +89,30 @@ public class Hook : MonoBehaviour
             transform.position = Vector2.down * 4.1f;
             myCollider.enabled = true;
         });
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.gameObject.tag == "Fish" && fishCount != strenght)
+        {
+            fishCount++;
+            Fish fish = other.gameObject.GetComponent<Fish>();
+            fish.Hooked();
+            caughtFishes.Add(fish);
+            other.transform.SetParent(transform);
+            other.transform.position = hookTransform.position;
+            other.transform.rotation = hookTransform.rotation;
+            other.transform.localScale = Vector3.one;
+
+            other.transform.DOShakeRotation(5, Vector3.forward * 45, 10, 90, false).SetLoops(1, LoopType.Yoyo).OnComplete(delegate
+            {
+                other.transform.rotation = Quaternion.identity;
+            });
+
+            if (fishCount == strenght)
+            {
+                StopFishing();
+            }
+        }
     }
 }
