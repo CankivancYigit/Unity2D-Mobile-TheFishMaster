@@ -46,8 +46,8 @@ public class Hook : MonoBehaviour
 
     public void StartFishing()
     {
-        lenght = -50;
-        strenght = -3;
+        lenght = IdleManager.instance.length - 25;
+        strenght = IdleManager.instance.strength;
         fishCount = 0;
         float time = (-lenght) * 0.1f;
 
@@ -69,8 +69,10 @@ public class Hook : MonoBehaviour
             });
         });
 
+        ScreensManager.instance.ChangeScreen(Screens.GAME);
         myCollider.enabled = false;
         canMove = true;
+        caughtFishes.Clear();
     }
 
     void StopFishing() 
@@ -88,6 +90,15 @@ public class Hook : MonoBehaviour
         {
             transform.position = Vector2.down * 4.1f;
             myCollider.enabled = true;
+            int caughtFishesPrice = 0;
+            for (int i = 0; i < caughtFishes.Count; i++)
+            {
+                caughtFishes[i].transform.SetParent(null);
+                caughtFishes[i].PlaceFish();
+                caughtFishesPrice += caughtFishes[i].Type.price;
+            }
+            IdleManager.instance.totalGain = caughtFishesPrice;
+            ScreensManager.instance.ChangeScreen(Screens.END);
         });
     }
 

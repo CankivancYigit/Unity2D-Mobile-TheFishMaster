@@ -86,6 +86,7 @@ public class IdleManager : MonoBehaviour {
             {
                 DateTime d = DateTime.Parse(@string);
                 totalGain = (int)((DateTime.Now - d).TotalMinutes * offlineEarnings + 1.0);
+                ScreensManager.instance.ChangeScreen(Screens.RETURN);
             }
         }
     }
@@ -102,6 +103,7 @@ public class IdleManager : MonoBehaviour {
         lengthCost = costs[-length / 10 - 3];
         PlayerPrefs.SetInt("Length", -length);
         PlayerPrefs.SetInt("Wallet", wallet);
+        ScreensManager.instance.ChangeScreen(Screens.MAIN);
     }
 
     public void BuyStrength()
@@ -111,6 +113,7 @@ public class IdleManager : MonoBehaviour {
         strengthCost = costs[strength - 3];
         PlayerPrefs.SetInt("Strength", strength);
         PlayerPrefs.SetInt("Wallet", wallet);
+        ScreensManager.instance.ChangeScreen(Screens.MAIN);
     }
 
     public void BuyOfflineEarnings()
@@ -120,18 +123,21 @@ public class IdleManager : MonoBehaviour {
         offlineEarningsCost = costs[offlineEarnings - 3];
         PlayerPrefs.SetInt("Offline", offlineEarnings);
         PlayerPrefs.SetInt("Wallet", wallet);
+        ScreensManager.instance.ChangeScreen(Screens.MAIN);
     }
 
     public void CollectMoney()
     {
         wallet += totalGain;
         PlayerPrefs.SetInt("Wallet", wallet);
+        ScreensManager.instance.ChangeScreen(Screens.MAIN);
     }
 
     public void CollectDoubleMoney()
     {
         wallet += totalGain * 2;
         PlayerPrefs.SetInt("Wallet", wallet);
+        ScreensManager.instance.ChangeScreen(Screens.MAIN);
     }
 
 }
